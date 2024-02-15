@@ -1,7 +1,9 @@
 from typing import List
+from datetime import datetime, timedelta
 from sqlalchemy.orm import Session
 from src.database.models import Contact
 from src.schemas import ContactModel, ContactUpdate
+from sqlalchemy.sql import extract
 
 
 async def find_contacts(contacts_find_data : str, db: Session) -> Contact | None :
@@ -17,10 +19,13 @@ async def find_contacts(contacts_find_data : str, db: Session) -> Contact | None
 
 
 async def find_contacts_delta_time(contact_find_days : int, db: Session) -> Contact | None :
-    ...
-    # result =  db.query(Contact).filter(Contact.first_name == contact_find_data).first()
-    # if result:
-    #     return result
+    start_date = datetime.now().date()
+    end_date = start_date + timedelta(days=contact_find_days)
+    contacts = db.query(Contact).filter(
+        (extract('month', Contact.birthday) >= start_date.month) & (extract('month', Contact.birthday) <= end_date.month),
+        (extract('day', Contact.birthday) >= start_date.day) & (extract('day', Contact.birthday) <= end_date.day)
+    ).all()
+    return contacts
 
 
 async def get_contacts(skip: int, limit: int, db: Session) -> List[Contact]:

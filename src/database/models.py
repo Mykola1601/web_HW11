@@ -1,5 +1,5 @@
 
-from sqlalchemy import Column, Integer, String, Boolean, func, Table
+from sqlalchemy import Column, Integer, String, Boolean, func, Table, Date
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.schema import ForeignKey
 from sqlalchemy.sql.sqltypes import DateTime
@@ -14,7 +14,7 @@ class Contact(Base):
     first_name = Column(String(50), nullable=False)
     second_name = Column(String(50), nullable=False)
     mail = Column(String(60), nullable=False)
-    birthday = Column(DateTime, nullable=False)
+    birthday = Column(Date, nullable=False)
     addition = Column(String(300), nullable=True)
     created_at = Column('created_at', DateTime, default=func.now())
 

@@ -4,32 +4,31 @@ from src.database.models import Contact
 from src.schemas import ContactModel, ContactUpdate
 
 
-async def get_contacts(skip: int, limit: int, db: Session) -> List[Contact]:
-    return db.query(Contact).offset(skip).limit(limit).all()
-
-
-async def get_contact(contact_id: int, db: Session) -> Contact:
-    return db.query(Contact).filter(Contact.id == contact_id).first()
-
-
-async def find_contact(contact_find_data : str, db: Session) -> Contact | None :
-    result =  db.query(Contact).filter(Contact.first_name == contact_find_data).first()
+async def find_contacts(contacts_find_data : str, db: Session) -> Contact | None :
+    result =  db.query(Contact).filter(Contact.first_name == contacts_find_data).all()
     if result:
         return result
-    result =  db.query(Contact).filter(Contact.second_name == contact_find_data).first()
+    result =  db.query(Contact).filter(Contact.second_name == contacts_find_data).all()
     if result:
         return result
-    result =  db.query(Contact).filter(Contact.mail == contact_find_data).first()
+    result =  db.query(Contact).filter(Contact.mail == contacts_find_data).all()
     if result:
         return result
 
 
-async def find_contact(contact_find_days : int, db: Session) -> Contact | None :
+async def find_contacts_delta_time(contact_find_days : int, db: Session) -> Contact | None :
     ...
     # result =  db.query(Contact).filter(Contact.first_name == contact_find_data).first()
     # if result:
     #     return result
+
+
+async def get_contacts(skip: int, limit: int, db: Session) -> List[Contact]:
+    return db.query(Contact).offset(skip).limit(limit).all()
         
+
+async def get_contact(contact_id: int, db: Session) -> Contact:
+    return db.query(Contact).filter(Contact.id == contact_id).first()
 
 
 async def create_contact(body: ContactModel, db: Session) -> Contact:

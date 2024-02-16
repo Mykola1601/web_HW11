@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from src.database.models import Contact
 from src.schemas import ContactModel, ContactUpdate
 from sqlalchemy.sql import extract
+from sqlalchemy import func, and_
 
 
 async def find_contacts(contacts_find_data : str, db: Session) -> Contact | None :
@@ -17,15 +18,24 @@ async def find_contacts(contacts_find_data : str, db: Session) -> Contact | None
     if result:
         return result
 
-
-async def find_contacts_delta_time(contact_find_days : int, db: Session) -> Contact | None :
-    start_date = datetime.now().date()
-    end_date = start_date + timedelta(days=contact_find_days)
+#---------------
+def find_contacts_by_birthday_month_and_day(db: Session, month: int, day: int) ->list:
     contacts = db.query(Contact).filter(
-        (extract('month', Contact.birthday) >= start_date.month) & (extract('month', Contact.birthday) <= end_date.month),
-        (extract('day', Contact.birthday) >= start_date.day) & (extract('day', Contact.birthday) <= end_date.day)
+        extract('month', Contact.birthday) == month,
+        extract('day', Contact.birthday) == day
     ).all()
     return contacts
+
+async def find_contacts_delta_time(contact_find_days : int, db: Session) ->  List[Contact]:
+    current_date = datetime.now().date()
+    dates= []
+    result = []
+    for i in range(contact_find_days):
+        dates.append(current_date+timedelta(days=i))
+    for d in dates:
+        result.extend( find_contacts_by_birthday_month_and_day(db, month = d.month, day = d.day )  )
+    return  result
+#--------------------
 
 
 async def get_contacts(skip: int, limit: int, db: Session) -> List[Contact]:

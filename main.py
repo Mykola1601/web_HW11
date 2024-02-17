@@ -5,10 +5,11 @@ from fastapi import  HTTPException, Depends
 from src.database.db import get_db
 from sqlalchemy import text
 
-
 from src.routes import notes, tags, contacts
+from middlewares import CustomHeaderMiddleware
 
 app = FastAPI()
+app.add_middleware(CustomHeaderMiddleware)
 
 app.include_router(contacts.router, prefix='/api')
 app.include_router(tags.router, prefix='/api')
@@ -30,8 +31,6 @@ async def healthcheck(db: Session = Depends(get_db)):
     except Exception as e:
         print(e)
         raise HTTPException(status_code=503, detail="Database connection error")
-
-
 
 
 if __name__ == "__main__":

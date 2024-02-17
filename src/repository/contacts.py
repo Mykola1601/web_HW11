@@ -63,7 +63,8 @@ async def remove_contact(contact_id: int, db: Session) -> Contact | None:
     if contact:
         db.delete(contact)
         db.commit()
-    return contact
+        return contact
+    raise HTTPException(status_code=status.HTTP_404_NOT_FOUND , detail="Contact ID is NOT exist")
 
 
 async def update_contact(contact_id: int, body: ContactUpdate, db: Session) -> Contact | None:
@@ -75,5 +76,4 @@ async def update_contact(contact_id: int, body: ContactUpdate, db: Session) -> C
         contact.birthday = body.birthday
         contact.addition = body.addition
         db.commit()
-    return contact
-
+        return contact

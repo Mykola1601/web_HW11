@@ -48,7 +48,7 @@ async def get_contact(contact_id: int, db: Session) -> Contact:
 
 
 async def create_contact(body: ContactModel, db: Session) -> Contact:
-    email = db.query(Contact).filter(email = body.mail).first()
+    email = db.query(Contact).filter(Contact.mail == body.mail).first()
     if email:
         raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Email is exist")
     contact = Contact(first_name=body.first_name, second_name=body.second_name, mail=body.mail, birthday=body.birthday, addition=body.addition)

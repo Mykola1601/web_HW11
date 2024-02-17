@@ -21,17 +21,6 @@ class Contact(Base):
     created_at = Column('created_at', DateTime, default=func.now())
 
 
-# class Contact(BaseModel):
-#     first_name: str
-#     second_name: str
-#     mail: EmailStr
-#     birthday: date
-#     addition: str
-
-#     class Config:
-#         orm_mode = True
-
-
 note_m2m_tag = Table(
     "note_m2m_tag",
     Base.metadata,

@@ -1,13 +1,13 @@
 from datetime import datetime
 from typing import List, Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, EmailStr, PastDate
 
 
 class ContactModel(BaseModel):
     first_name: str = Field(max_length=50, min_length=3)
     second_name: str = Field(max_length=50, min_length=3)
-    mail: str = Field(max_length=60, min_length=6)
-    birthday: datetime = Field()
+    mail: EmailStr = Field(max_length=60, min_length=6)
+    birthday: PastDate
     addition: str = Field(max_length=300)
 
     def __str__(self) -> str:
@@ -18,8 +18,8 @@ class ContactResponse(ContactModel):
     id: int
     first_name: str  
     second_name: str 
-    mail: str  
-    birthday: datetime 
+    mail: EmailStr  
+    birthday: PastDate 
     addition: str 
     created_at: datetime
 
@@ -30,8 +30,8 @@ class ContactResponse(ContactModel):
 class ContactUpdate(ContactModel):
     first_name: str  
     second_name: str 
-    mail: str  
-    birthday: datetime 
+    mail: EmailStr  
+    birthday: PastDate 
     addition: str 
     created_at: datetime
 

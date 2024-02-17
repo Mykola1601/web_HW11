@@ -1,6 +1,7 @@
 from typing import List
 from fastapi import APIRouter, HTTPException, Depends, status
 from sqlalchemy.orm import Session
+from sqlalchemy import text
 from src.database.db import get_db
 from src.schemas import ContactModel, ContactResponse, ContactUpdate
 from src.repository import contacts as repository_contacts
@@ -48,7 +49,6 @@ async def remove_contact(contact_id: int, db: Session = Depends(get_db)):
     if contact is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Contact not found")
     return contact
-
 
 
 

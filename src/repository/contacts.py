@@ -4,6 +4,7 @@ from sqlalchemy.orm import Session
 from src.database.models import Contact
 from src.schemas import ContactModel, ContactUpdate
 from sqlalchemy.sql import extract
+from fastapi import HTTPException, status
 
 
 async def find_contacts(contacts_find_data : str, db: Session) -> Contact | None :
@@ -16,6 +17,7 @@ async def find_contacts(contacts_find_data : str, db: Session) -> Contact | None
     result =  db.query(Contact).filter(Contact.mail == contacts_find_data).all()
     if result:
         return result
+
 
 #---------------
 def find_contacts_by_birthday_month_and_day(db: Session, month: int, day: int) ->list:
@@ -46,6 +48,9 @@ async def get_contact(contact_id: int, db: Session) -> Contact:
 
 
 async def create_contact(body: ContactModel, db: Session) -> Contact:
+    email = db.query(Contact).filter(email = body.mail).first()
+    if email:
+        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Email is exist")
     contact = Contact(first_name=body.first_name, second_name=body.second_name, mail=body.mail, birthday=body.birthday, addition=body.addition)
     db.add(contact)
     db.commit()

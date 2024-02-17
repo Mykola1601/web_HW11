@@ -4,7 +4,6 @@ from sqlalchemy.orm import Session
 from src.database.models import Contact
 from src.schemas import ContactModel, ContactUpdate
 from sqlalchemy.sql import extract
-from sqlalchemy import func, and_
 
 
 async def find_contacts(contacts_find_data : str, db: Session) -> Contact | None :

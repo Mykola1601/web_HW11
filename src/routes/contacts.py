@@ -48,3 +48,9 @@ async def remove_contact(contact_id: int, db: Session = Depends(get_db)):
     if contact is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Contact not found")
     return contact
+
+
+
+
+
+

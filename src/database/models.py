@@ -4,7 +4,8 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql.schema import ForeignKey
 from sqlalchemy.sql.sqltypes import DateTime
 from sqlalchemy.ext.declarative import declarative_base
-
+# from pydantic import BaseModel, EmailStr
+# from datetime import date
 
 Base = declarative_base()
 
@@ -14,10 +15,21 @@ class Contact(Base):
     id = Column(Integer, primary_key=True)
     first_name = Column(String(50), nullable=False)
     second_name = Column(String(50), nullable=False)
-    mail = Column(String(60), nullable=False)
-    birthday = Column(Date, nullable=False)
+    mail = Column(String(60), unique=True, nullable=False)
+    birthday = Column(Date, nullable=True)
     addition = Column(String(300), nullable=True)
     created_at = Column('created_at', DateTime, default=func.now())
+
+
+# class Contact(BaseModel):
+#     first_name: str
+#     second_name: str
+#     mail: EmailStr
+#     birthday: date
+#     addition: str
+
+#     class Config:
+#         orm_mode = True
 
 
 note_m2m_tag = Table(

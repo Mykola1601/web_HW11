@@ -38,7 +38,6 @@ async def find_contacts_by_birthday_month_and_day(db: Session, month: int, day: 
         )
     contacts = await db.execute(query)
     result = contacts.scalars().all()
-    print(result)
     return result
 
 async def find_contacts_delta_time(contact_find_days: int, db: Session) -> List[Contact]:
@@ -93,9 +92,11 @@ async def update_contact(contact_id: int, body: ContactUpdate, db: Session) -> C
         contact.second_name = body.second_name
         contact.mail = body.mail
         contact.birthday = body.birthday
+        contact.addition = body.addition
         await db.commit()
         await db.refresh(contact)
     return contact
+
 
 
 

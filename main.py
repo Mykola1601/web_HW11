@@ -2,7 +2,6 @@ import uvicorn
 from fastapi import FastAPI, File, UploadFile, status
 from fastapi import  HTTPException, Depends
 from sqlalchemy import text
-from sqlalchemy.orm import Session
 from src.database.db import get_db
 import pathlib
 from fastapi.staticfiles import StaticFiles
@@ -10,11 +9,23 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.routes import  contacts # , notes, tags
 from middlewares import CustomHeaderMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 
 
 MAX_FILE_SIZE = 1_000_000  # 1Mb
 
 app = FastAPI()
+
+origins = ["*"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
 app.add_middleware(CustomHeaderMiddleware)
 
 app.include_router(contacts.router, prefix='/api')

@@ -37,38 +37,38 @@ class ContactUpdate(ContactModel):
 
     
 
-class TagModel(BaseModel):
-    name: str = Field(max_length=25)
+# class TagModel(BaseModel):
+#     name: str = Field(max_length=25)
 
 
-class TagResponse(TagModel):
-    id: int
+# class TagResponse(TagModel):
+#     id: int
 
-    class Config:
-        orm_mode = True
-
-
-class NoteBase(BaseModel):
-    title: str = Field(max_length=50)
-    description: str = Field(max_length=150)
+#     class Config:
+#         orm_mode = True
 
 
-class NoteModel(NoteBase):
-    tags: List[int]
+# class NoteBase(BaseModel):
+#     title: str = Field(max_length=50)
+#     description: str = Field(max_length=150)
 
 
-class NoteUpdate(NoteModel):
-    done: bool
+# class NoteModel(NoteBase):
+#     tags: List[int]
 
 
-class NoteStatusUpdate(BaseModel):
-    done: bool
+# class NoteUpdate(NoteModel):
+#     done: bool
 
 
-class NoteResponse(NoteBase):
-    id: int
-    created_at: datetime
-    tags: List[TagResponse]
+# class NoteStatusUpdate(BaseModel):
+#     done: bool
 
-    class Config:
-        orm_mode = True
+
+# class NoteResponse(NoteBase):
+#     id: int
+#     created_at: datetime
+#     tags: List[TagResponse]
+
+#     class Config:
+#         orm_mode = True
